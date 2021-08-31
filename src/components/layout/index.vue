@@ -3,13 +3,13 @@
   <el-container style="min-height: 100vh">
     <side />
     <el-container style="background-color:#eaeaea">
-      <el-header style="background-color: #fff; box-shadow: 0 1px 4px #999; display:flex; flex-direction: row-reverse; align-items:center">
+      <el-header height="42px" style="background-color: #4E80F8; box-shadow: 0 1px 4px #999; display:flex; flex-direction: row-reverse; align-items:center; padding-right:0">
         <setting />
       </el-header>
-      <breadcrumb />
+      <!-- <breadcrumb /> -->
       <el-main style="padding-top:0; display:flex; align-items:center; flex-direction: column;">
-          <section style="background-color:#ffffff; flex:1; width: 100%; boxSizing:border-box; padding: 20px">
-              <router-view />
+          <section style="flex:1; width: 100%; boxSizing:border-box;">
+            <router-view />
           </section>
       </el-main>
       <!-- <el-footer>Footer</el-footer> -->

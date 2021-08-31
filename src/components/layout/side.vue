@@ -1,22 +1,19 @@
 <template>
-  <el-aside width="200px" style="background-color: #1b1c1d" coll>
-    <img
-      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARYAAABgCAMAAADvn60VAAADAFBMVEUAAAD////7+/v5+fn+/v7////////////////+/v7+/v79/f3////8/Pz8/Pz////////////29vb////+/v76+vr////////////5+fn////8/Pz7+/v8/Pz////////9/f3////////4+Pj////9/f3///8Dw//39/f6+vr8/PwamPr29vb19fX////9/f0refb29vb29vb4+Pj29vb////9/f3////29vb///8dlPT///////////////////////8vcPb///8IuP42bPk3Zvn29vYGu/0KtPwMrfs4ZfgmhPs3Z/kHuP43Z/cclPsvcvYJtv4EwP43Zfo1Z/kQqf0Evv4Msf0Fvv4ng/otevs2Zvgekfwgjfshi/wUovwDwP4Uo/0bnf4li/0Zm/4Or/4tdfkwdPkOrv4tdvoHvP4khfoDwv8pffz///8Lr/v29vYPp/sNqvsRpPoWm/kmf/gYmfkqd/cZlvktc/YToPoSovofjPgpevcxbPUEu/0ckfkNrPsVnfoHt/0zafUKsfsofPgkg/cblPodjvkGuf0JsvwvcPYItf0sdffPnVoUn/sihvg2Y/U0ZvUhiPklgfgwbvYPqfwgivkucfcwb/bVnlUjhPgDvv41ZfXSnVcyavb7/f8yc/Yqf/g1cPUgkvo4YfXm9P8Js/0xdvfw+f8tffYahvgMrfw8aPXXnlM3pvsXkvoveferlnsWjvo5bPYoh/hJpfsVl/oljPk6Zv00bfYqg/iZlYoPmPotevcCxv8hff0Zivscmv0dhP0qkfm1mXHFm2LS6v81bf0Tk/sOnPpikr/d8f8Prf8Wov+W0f0ig/srn/pZicckif/f7/4/uPwumflujrSMlJfJ5P4epfo4Y/pUo/mklYH4/P9fq/rKnF7ZnlEqgf9srvV7j6cueP5FsPspdPpTiM6Fkp654f5cufx4vfonkfA5keAxhexBht68mmqn1/6Cy/yMxPwRpftLj9av2f4or/sphPI4h+QwluZlmtY+eed9osnmVnuvAAAAbnRSTlMA4TA9ZjMF9oXDKHEKrn0DuBSI60gd/dePGqMkQy0Om1365089YRf9lEchGffpslYN8eGb28m/77xsB/NRdRLc1EHPgW6qpXBGK8ithFhY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"
+  <el-aside width="200px" style="background-color: #4E576B; padding: 0 12px; box-sizing: border-box; overflow:hidden">
+    <div
       style="
-        display: block;
         margin: auto;
+        margin-top: 10px;
         height: var(--el-header-height);
-        width: 100%;
-        box-sizing: border-box;
-        object-fit: contain;
-        padding: 10px;
+        background-color: #999;
+        height: 50px;
       "
     />
     <el-menu
-      :default-active="$route?.meta?.selected"
+      :default-active="selected"
       text-color="#999999"
       active-text-color="#ffffff"
-      backgroundColor="#1b1c1d"
+      backgroundColor="#4E576B"
       :collapse-transition="true"
       :unique-opened="true"
       mode="vertical"
@@ -26,10 +23,10 @@
   </el-aside>
 </template>
 <script lang="ts">
-import { defineComponent} from "vue";
-import {useRouter} from 'vue-router'
+import { defineComponent, computed, ComputedRef} from "vue";
+import {useRouter, useRoute} from 'vue-router'
 import SdieItem from './side-item.vue';
-
+import logo from '@/assets/img/logo';
 import {
   ElAside,
   ElMenu,
@@ -38,9 +35,13 @@ import {
 export default defineComponent({
   setup() {
     const router = useRouter();
+    const route = useRoute();
+    const selected:ComputedRef<any> = computed(()=>(route.meta.selected))
 
     return {
-      routes: router.options.routes
+      routes: router.options.routes,
+      logo,
+      selected
     };
   },
   components: {
@@ -53,8 +54,3 @@ export default defineComponent({
   }
 });
 </script>
-<style lang="scss">
-.el-menu {
-  border-right: 0 !important;
-}
-</style>

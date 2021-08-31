@@ -1,51 +1,31 @@
 import axios, { AxiosRequestConfig, AxiosInstance, Canceler, AxiosResponse } from 'axios';
 import { App } from "vue";
 import {ElMessage} from 'element-plus';
-import store from '../store';
+import store from '@/store';
+import router from '@/router';
+import { 
+    basicToken, 
+    API_whiteList, 
+    availableRefreshTime, 
+    errStatusHandles, 
+    filterErrorMsgApis,  
+    specifyApiInOutOfRefreshingCode
+} from './request.config';
 
-
-//环境接口
-interface EnvType {
-    development: string
-    production: string
-}
-
-const apiConfig: EnvType = {//接口环境变量
-    development: "",
-    production: ""
-}
-const envStr = import.meta.env.MODE as ("development" | "production");
-
-export const baseURL = apiConfig[envStr];
-
-
+const BASE_URL:string = import.meta.env.VITE_BASE_URL as string;
 
 const cancelToken = axios.CancelToken;
 
-//过滤特定的接口地址，以下路径不进入重复取消队列
-const API_whiteList: [string?] = [
-    
-]
-
-//特定的code状态码(code!=2000)执行的操作
-const specifyCodeHandles: any = {
-    
-}
-//特定接口不需要走刷新token接口时机判断
-const specifyApiInOutOfRefreshingCode = [
-    
-]
-
-
-export class AxiosRequest {
+class AxiosRequest {
 
     axiosInstance: AxiosInstance
     post: (url: string, data?: any, config?: AxiosRequestConfig) => Promise<any>
     get: AxiosInstance['get']
     waitRefreshTokenRequestList: any[]
     axiosConfig: AxiosRequestConfig = {
-        baseURL: '/api',
-        withCredentials: true
+        baseURL: BASE_URL,
+        withCredentials: true,
+        timeout: 10000
     }
 
     constructor() {
@@ -74,6 +54,7 @@ export class AxiosRequest {
 
     pendingList: { u: string, f: Canceler }[] = [];
 
+
     commonRequest = (req: any) => {//定义请求报文
         this.removePending(req);
         req.cancelToken = new cancelToken((c) => {
@@ -84,10 +65,66 @@ export class AxiosRequest {
 
 
         return new Promise((resolve, reject) => {
-            const auth:any = store.state.auth || {};
-            req.headers['Authorization'] = req.url.includes('/oauth/token') ? `Basic aGVuZ2JveTpjaGFwdGVy` : `Bearer ${auth.access_token}`
+            const time = new Date().getTime();
             
-            resolve(req);
+            if(req.data && Object.prototype.toString.call(req.data)==="[object Object]"){
+                req.data.timestamp = time;
+            }
+
+            const reqFun = ()=>{
+                const auth:any = store.state.auth || {};
+
+                if(!specifyApiInOutOfRefreshingCode.includes(req.url)){
+                    req.headers['Authorization'] = `${auth.token_type} ${auth.access_token}`;
+                    store.commit("updateLatestFetchTime");
+                }else{
+                    req.headers['Authorization'] = basicToken;
+                }
+
+                resolve(req);
+            }
+      
+            //======================================  处理刷新token接口逻辑 开始
+           
+            if(store.state.auth && store.state.auth.expirationTime && !specifyApiInOutOfRefreshingCode.includes(req.url)){
+
+                const {latestFetchTime, auth} = store.state;
+
+                //已经过期
+                if(auth.expirationTime && auth.expirationTime<time){
+                    //在刷新时效范围之内,则启用刷新token操作；
+                    if(latestFetchTime && (time - latestFetchTime < availableRefreshTime)){
+                        this.waitRefreshTokenRequestList.push(reqFun);
+
+                        //调用刷新接口
+                        const len = this.waitRefreshTokenRequestList.length;
+                        
+                        if(len>1) return;
+
+                        store.dispatch("login",{grant_type: 'refresh_token', refresh_token: auth.refresh_token}).then((data)=>{
+                            store.commit("storageAuth", data);
+
+                            while(this.waitRefreshTokenRequestList.length){
+                                const cb = this.waitRefreshTokenRequestList.shift();
+                                cb();
+                            }
+                        });
+                    }else{//不在有效刷新期内，既然已经过期，就直接退出重新登录；
+                        ElMessage.closeAll();
+                        ElMessage.warning("已过期，请重新登录！");
+
+                        store.commit("clearAuth");
+                        router.replace("/login");
+                    }
+                    
+                    return;
+                }
+                
+            }
+            //====================================================处理刷新token接口逻辑 结束
+
+            reqFun();
+
         });
     }
 
@@ -102,15 +139,14 @@ export class AxiosRequest {
                 return;
             }
 
-            const { code } = res.data;
             if (res.data && res.data.code != 'SUCCESS' && res.data.errorMsg) {
-                ElMessage.error(res.data.errorMsg);
+
+                if(!filterErrorMsgApis.includes(res.config.url as string)){
+                    ElMessage.error(res.data.errorMsg);
+                }
+                
                 reject(res.data);
             }
-
-            const handler = specifyCodeHandles[code];
-            handler && handler(resolve, reject)
-          
             resolve(res.data);
         })
     }
@@ -137,16 +173,30 @@ export class AxiosRequest {
         this.axiosInstance.interceptors.response.use((res: AxiosResponse): Promise<any> => {
             return this.commonResponse(res);
         }, (err: any) => {
+            ElMessage.closeAll();
+
+            if(err.message?.includes("timeout")){
+                ElMessage({
+                    message: "请求超时",
+                    type: 'error'
+                })
+            }
+
             if (axios.isCancel(err)) {
                 console.error('重复请求已经取消')
             }
             
-            if(err.response && err.response.data.error_description){
-                ElMessage.error(err.response.data.error_description)
+            if(err.response && err.response.data){
+                const {error, error_description} = err.response.data
+                ElMessage({
+                    dangerouslyUseHTMLString: true,
+                    message: error_description || error,
+                    type: 'error'
+                })
             }
 
-            if(err.response.status!=200){
-                ElMessage.error(err.response.statusText)
+            if(err.response && err.response.status!=200){
+                errStatusHandles[err.response.status] && errStatusHandles[err.response.status](err.response);
             }
             
             throw new Error(err)
@@ -160,8 +210,14 @@ declare module "@vue/runtime-core" {
     }
 }
 
+const axiosRequst = new AxiosRequest();
+
 export default {
     install(app: App) {
-        app.config.globalProperties.$axios = new AxiosRequest();
+        app.config.globalProperties.$axios = axiosRequst;
     }
+}
+
+export const useAxios = ()=>{
+    return axiosRequst;
 }

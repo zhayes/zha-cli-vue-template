@@ -1,5 +1,6 @@
 <script lang="tsx">
-import { defineComponent } from 'vue';
+import { h, defineComponent } from 'vue';
+import {useRouter} from 'vue-router'
 
 import {
   ElSubmenu,
@@ -12,41 +13,38 @@ export default defineComponent({
     props:{
         data: {
             type: Array,
-            value: []
+            default: []
         }
     },
     setup(props) {
-        let data:any = [];
+        const router = useRouter();
 
-        props?.data?.map((item:any)=>{
-            if(item.path==="/"){
-                data = item.children;
-            }
-        })
-
-        data = data.filter((item:any)=>{
+        let data = props?.data?.filter((item:any)=>{
             return !!!item?.meta?.hidden
         })
-
 
         const renderItem = (data:[])=>{
 
             return data.map((item:any, index)=>{
                 if(item.hidden) return null
 
-                if(item.children && item.children.length){
+                const showChildren = !!item?.children?.filter((item:any)=>{
+                    return !item.hidden
+                }).length;
+
+                if(showChildren){
                     return (
                         <el-submenu index={item?.meta?.title} key={item?.meta?.title}>
                             {{
-                               title: ()=>(<><i class="el-icon-message"></i>{item?.meta?.title}</>),
-                               default: renderItem(item.children as [])
+                               title: ()=>(<><ts-component name={item?.meta?.icon} style="margin-right: 9px"/> {item?.meta?.title}</>),
+                               default: ()=>renderItem(item.children as [])
                             }}
                         </el-submenu>
                     )
                 }else{
                     return (
-                        <el-menu-item index={item?.meta?.title}>
-                            <router-link to={item.path}>{item?.meta?.title}</router-link>
+                        <el-menu-item index={item?.meta?.title} onClick={()=>(router.push(item.path))}>
+                            <ts-component name={item?.meta?.icon}/> {item?.meta?.title}
                         </el-menu-item>
                     )
                 }
@@ -64,23 +62,5 @@ export default defineComponent({
 })
 </script>
 <style lang="scss">
-.el-menu-item.is-active {
-  background-color: #2f69f4 !important;
-}
-.el-submenu__title,
-.el-menu-item {
-  &:hover {
-    color: #fff !important;
-  }
-}
 
-.el-menu-item {
-  color: inherit;
-  a {
-    text-decoration: none;
-    color: inherit;
-    font-size: inherit;
-    display: block;
-  }
-}
 </style>

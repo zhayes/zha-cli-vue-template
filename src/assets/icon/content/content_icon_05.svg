@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="28px" height="14px" viewBox="0 0 28 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>路径 4备份</title>
+    <defs>
+        <linearGradient x1="-1.11022302e-14%" y1="50%" x2="100%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#3FD3A7" stop-opacity="0.0725524476" offset="0%"></stop>
+            <stop stop-color="#35C88B" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="前台" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="3节点连接" transform="translate(-846.000000, -413.000000)" fill="url(#linearGradient-1)">
+            <polygon id="路径-4备份" transform="translate(859.712964, 420.105039) rotate(-180.000000) translate(-859.712964, -420.105039) " points="846 421.637856 865.211374 421.637856 865.211374 426.637856 873.425929 420.008795 865.211374 413.572222 865.211374 418.572222 846 418.572222"></polygon>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>login_delete</title>
+    <g id="前台" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+        <g id="重置密码" transform="translate(-1129.000000, -417.000000)" stroke="#6C6D71">
+            <g id="login_delete" transform="translate(1130.000000, 418.000000)">
+                <line x1="0" y1="0" x2="10" y2="10" id="路径-3"></line>
+                <line x1="0" y1="0" x2="10" y2="10" id="路径-3备份-2" transform="translate(5.000000, 5.000000) scale(-1, 1) translate(-5.000000, -5.000000) "></line>
+            </g>
+        </g>
+    </g>
+</svg>

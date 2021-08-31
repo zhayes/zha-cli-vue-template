@@ -1,47 +1,47 @@
+import Layout from '@/components/layout/index.vue';
 
-export default [
+const data = [
     {
         path: '/login',
         name:"login",
-        component: () => import('../views/login/index.vue')
+        hidden: true,
+        component: () => import('@/views/login/index.vue'),
+        meta:{
+            auth: false,
+        }
     },
     {
         path: '/',
+        name:"home",
+        hidden: true,
         redirect: '/welcome',
+        component: Layout
+    },
+    {
+        path: '/welcome',
         name:"welcome",
-        component: ()=>import('../components/layout/index.vue'),
+        redirect: '/welcome/index',
+        meta: {title: '欢迎页', icon: "nav_1"},
+        component: Layout,
         children: [
             { 
-                path: '/welcome', 
-                name: 'welcome', 
-                component: () => import('../views/welcome/index.vue'),
+                path: '/welcome/index', 
+                name: 'welcome_page', 
+                component: () => import('@/views/welcome/index.vue'),
+                hidden: true,
                 meta:{
                     title: '欢迎页',
-                    breadcrumb: [{title:'欢迎页'}, {title:'hi', path:'/welcome'}]
-                },
-                children: [
-                    { 
-                        path: '/welcome', 
-                        name: 'welcome', 
-                        component: () => import('../views/welcome/index.vue'),
-                        meta:{
-                            title: '欢迎页2',
-                            selected: '欢迎页2',
-                            breadcrumb: [{title:'欢迎页'}, {title:'hi', path:'/welcome'}]
-                        }
-                    },
-                ]
-            },
-            {
-                path: '/dashboard', 
-                name: 'dashboard', 
-                component: () => import('../views/welcome/index.vue'),
-                meta:{
-                    title:'dashboard',
-                    selected: 'dashboard',
-                    breadcrumb: [{title:'welcome', path:'/welcome'}, {title:'hi', path:''}]
+                    selected: '欢迎页'
                 }
             }
         ]
     },
+    {
+		path: '/:pathMatch(.*)', 
+        name: "404",
+		component: ()=>import('@/views/404/index.vue'),
+		hidden: true
+	}
 ]
+
+export default data

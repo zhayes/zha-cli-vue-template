@@ -19,7 +19,7 @@ export default defineComponent({
 
       watchEffect(() => {
         const matched = route.matched.filter((item:any)=>{
-          return item.meta && item.meta.breadcrumb && item.meta.breadcrumb.length
+          return route.path===item.path && item.meta && item.meta.breadcrumb && item.meta.breadcrumb.length
         })[0]
         breadcrumb.value = matched?.meta?.breadcrumb || [];
       })

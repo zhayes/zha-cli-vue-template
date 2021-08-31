@@ -1,24 +1,34 @@
 <template>
-    <el-popper>
-        <template #trigger>
-            <div style="display:flex; align-items: center">
-                <el-avatar
-                    style="margin-right: 10px"
-                    size="large" 
-                    src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-                />
-                {{username}}
-            </div>
-            
-        </template>
-        <div class="settingPad">
-           <p @click="logout">退出登录</p>
+    <div style="display:flex; align-items: center; height:100%; font-size: 14px; color: #ffffff">
+        <!-- <el-avatar
+            style="margin-right: 8px; height: 24px; width:24px;"
+            size="large" 
+            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+        /> -->  
+        <div>
+            {{username}}
         </div>
-    </el-popper>
+        
+        <el-popconfirm
+            title="您确定要退出登录？"
+            @confirm="logout"
+        >
+            <template #reference>
+                <div 
+                    style="padding: 0 22px; background-color:#6290FF; height: 100%; display:flex; align-items:center; font-size:inherit; cursor:pointer; margin-left: 18px; white-space:nowrap" 
+                >
+                    <switch-button style="width: 15px"/>
+                    &nbsp;
+                    退出
+                </div>
+            </template>
+        </el-popconfirm>
+    </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
 import {ElAvatar, ElPopper, ElMenu, ElMenuItem} from 'element-plus'
+import {SwitchButton} from '@element-plus/icons'
 import {useStore} from 'vuex'
 
 export default defineComponent({
@@ -28,7 +38,7 @@ export default defineComponent({
 
         
        watch(()=>store.state.loginInfo,()=>{
-           username.value = store.state.loginInfo.username
+           username.value = store.state.loginInfo?.username
        })
 
         return {
@@ -39,7 +49,8 @@ export default defineComponent({
         ElAvatar,
         ElPopper,
         ElMenu, 
-        ElMenuItem
+        ElMenuItem,
+        SwitchButton
     },
     methods:{
         logout(){
@@ -48,9 +59,7 @@ export default defineComponent({
         }
     },
     mounted(){
-        this.$store.dispatch("getLoginInfo").then((data)=>{
-            this.$store.commit("storageInfo", data)
-        })
+        
     }
 })
 </script>

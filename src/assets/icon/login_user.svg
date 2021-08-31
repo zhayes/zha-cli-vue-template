@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="19px" viewBox="0 0 16 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>login_user</title>
+    <g id="前台" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1登录" transform="translate(-766.000000, -459.000000)" stroke="#C8CBD1" stroke-width="1.8">
+            <g id="login_user" transform="translate(767.000000, 459.000000)">
+                <circle id="椭圆形" cx="7" cy="4" r="3.1"></circle>
+                <path d="M3,10 L11,10 C12.6568542,10 14,11.3431458 14,13 L14,15 C14,16.6568542 12.6568542,18 11,18 L3,18 C1.34314575,18 2.02906125e-16,16.6568542 0,15 L0,13 C-2.02906125e-16,11.3431458 1.34314575,10 3,10 Z" id="矩形"></path>
+            </g>
+        </g>
+    </g>
+</svg>

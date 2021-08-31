@@ -11,12 +11,11 @@ const router = createRouter({
 
 router.beforeEach((to, from, next)=>{
   const {name, meta, path} = to;
-
-  if(path!="/login" && !store.state.auth){
-    return next({path: '/login'});
+  if(meta.auth!==false && !store.state.auth){
+    //return next({path: '/login', replace: true});
   }
   if(path==="/login" && store.state.auth){
-    return next({path: '/'});
+    return next({path: '/welcome', replace: true});
   }
 
   next();

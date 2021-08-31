@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>nav_08</title>
+    <defs>
+        <path d="M11,2 L11,3.292 L3.29289322,3.29289322 L3.292,11 L2,11 L2,2 L11,2 Z" id="path-1"></path>
+        <filter x="-5.6%" y="-16.7%" width="111.1%" height="122.2%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="-1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="SourceAlpha" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="控件" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="导航" transform="translate(-150.000000, -413.000000)">
+            <g id="nav_08" transform="translate(157.500000, 419.500000) rotate(-90.000000) translate(-157.500000, -419.500000) translate(151.000000, 413.000000)">
+                <g id="形状结合" transform="translate(6.500000, 6.500000) rotate(-45.000000) translate(-6.500000, -6.500000) ">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill-opacity="0.501475087" fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
